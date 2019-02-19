@@ -9,7 +9,7 @@
       <open-data type="userNickName"></open-data>
     </view>
     <view class="entry">
-      <button class="entry-button">
+      <button class="entry-button" bindtap="navToCalc">
         <text>计算器</text>
         <image src='../../images/finger.png' mode='aspectFit'></image>
       </button>
