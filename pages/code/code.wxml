@@ -3,7 +3,7 @@
     <text class="text-outer">微信小程序暂不支持跳转第三方网页，点击感兴趣的项目<text class="text-inner">一键查看并复制地址</text>吧.如果你觉得还不错，也请分享给你的朋友吧...</text>
     <view class="container">
       <view bindtap="copyCalUrl">计算器</view>
-      <view bindtap="copyVedioUrl">豆瓣电影</view>
-      <view bindtap="copyAudioUrl">音乐播放器</view>
+      <!-- <view bindtap="copyVedioUrl">豆瓣电影</view>
+      <view bindtap="copyAudioUrl">音乐播放器</view> -->
     </view>
 </view>
