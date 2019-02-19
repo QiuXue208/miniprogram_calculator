@@ -6,16 +6,46 @@
 }
 
 .userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
+  width: 320rpx;
+  height: 320rpx;
   margin: 20rpx;
   border-radius: 50%;
+  overflow:hidden;
 }
 
 .userinfo-nickname {
   color: #aaa;
 }
-
-.usermotto {
-  margin-top: 200px;
+.entry{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; 
 }
+.entry-button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height:90rpx;
+  width:250rpx;
+  margin-top:170rpx;
+}
+.entry-button > text{
+  font-family:'Courier New', Courier, monospace;
+}
+.entry-button > image{
+  width:70rpx;
+  height:40rpx;
+  margin-left:10rpx;
+}
+.entry > navigator{
+  /* width:200rpx;
+  height:50rpx; */
+  font-size:24rpx;
+  margin-top:20rpx;
+  color:#b9b0b0;
+}
+.nav-hover{
+  text-decoration: underline;
+}
+
