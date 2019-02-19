@@ -36,7 +36,7 @@
 .container > view{
   font-size: 34rpx;
   font-family: 'Times New Roman', Times, serif;
-  width:270rpx;
-  padding:20rpx 0 3rpx 10rpx;
+  width:170rpx;
+  padding:20rpx 0 3rpx 50rpx;
   border-bottom:1px solid #cfe2f3;
 }
