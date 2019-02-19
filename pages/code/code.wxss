@@ -1,0 +1,42 @@
+/* pages/code/code.wxss */
+.github-info{
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+}
+.github-info{
+  /* border:1px solid #c9daf8;  */
+  border-radius:10rpx;
+  padding:30rpx;
+  /* padding-bottom:420rpx; */
+  margin:40rpx;
+}
+.github-info > text{
+  font-size:30rpx;
+  color:#838080;
+}
+.text-inner{
+  color:#595656;
+}
+.button-calculator{
+  font-size:30rpx;
+}
+.container{
+  margin-top:100rpx;
+  border:1px solid #cfe2f3;
+  border-radius: 15rpx;
+  width:600rpx;
+  height:170rpx;
+}
+.container{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+.container > view{
+  font-size: 34rpx;
+  font-family: 'Times New Roman', Times, serif;
+  width:270rpx;
+  padding:20rpx 0 3rpx 10rpx;
+  border-bottom:1px solid #cfe2f3;
+}
