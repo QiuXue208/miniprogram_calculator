@@ -1,1 +1,60 @@
 /* pages/calculate/calculate.wxss */
+/* 定位 */
+.container{
+  width:100%;
+  position:relative;
+}
+.show-container{
+  background:#b9b4b4;
+  width:100%;
+  position: absolute;
+  top:1rpx;
+  left:0;
+  height:265rpx;
+}
+.number-and-symbol{
+  width:100%;
+  position:absolute;
+  left:0;
+  top:266rpx;
+}
+/* shadow */
+.show-container{
+  -webkit-box-shadow: inset 0px 0px 5px 1px rgba(165,161,161,1);
+  -moz-box-shadow: inset 0px 0px 5px 1px rgba(165,161,161,1);
+  box-shadow: inset 0px 0px 5px 1px rgba(165,161,161,1);
+}
+.row-container{
+  width:100%;
+  display:flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+.list{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width:186rpx;
+  height:186rpx;
+  margin-top:2rpx;
+  margin-right:2rpx;
+}
+.rowFiv > .list_0{
+  width:374rpx;
+}
+
+
+
+/* 设置颜色 */
+.row-container > .list{
+	background:#0095CD;
+}
+.rowFir > .list{
+  background:#FF8C00;
+}
+.row-container > .list_3{
+  background:#FF8C00;
+}
+.rowFiv > .list_2{
+  background:#FF8C00;
+}
