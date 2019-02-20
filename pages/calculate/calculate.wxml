@@ -1,7 +1,8 @@
 <!--pages/calculate/calculate.wxml-->
 <view class='container'>
 <view class='show-container'>
-  <input value="{{showValue}}" placeholder='0'></input>
+  <text class="result-text">{{resultStr}}</text>
+  <input class="user-input" value="{{showValue}}" placeholder='0'></input>
 </view>
 <view class="number-and-symbol">
    <view wx:for="{{datas}}" wx:for-index="index1" class="row-container {{index1}}">
