@@ -1,9 +1,11 @@
 <!--pages/calculate/calculate.wxml-->
 <view class='container'>
-<view class='show-container'></view>
+<view class='show-container'>
+  <input value="{{clickValue}}" placeholder='0'></input>
+</view>
 <view class="number-and-symbol">
    <view wx:for="{{datas}}" wx:for-index="index1" class="row-container {{index1}}">
-    <view wx:for="{{datas[index1]}}" wx:for-index="index2" class="list list_{{index2}}"><text>{{item}}</text></view>
+    <view wx:for="{{datas[index1]}}" wx:for-index="index2" bindtap='userClick' class="list list_{{index2}}" id='{{item}}'>{{item}}</view>
    </view>
 </view>
 </view>
