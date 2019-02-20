@@ -16,8 +16,17 @@ Page({
     calcSign: ['%', '+', '-', '×', '÷'],
     number: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
     resultSign:'=',
+    // 点击的值
     clickValue:'',
-    showValue:''
+    showValue:'',
+    // 计算结果
+    result:'',
+    // '=' 前的一串数字和计算符
+    resultStr:'',
+    // 是否清空显示框
+    clear:false,
+    // 是否显示结果
+    showResult:false
   },
 
   /**
@@ -29,7 +38,7 @@ Page({
   userClick:function(e){
     this.setData({
       clickValue: e.target.id,
-      showValue: this.data.showValue + e.target.id
+      showValue: this.data.showValue + e.target.id,
     })
     this.dealInput()
   },
@@ -68,9 +77,20 @@ Page({
       this.setData({
         showValue: '' + clickValue
       })
-    } else if ((lastButOne === '%' || lastButOne === '+' || lastButOne === '-' || lastButOne === '×' || lastButOne === '÷')&& clickValue === '='){
+    } else if ((lastButOne === '%' || lastButOne === '+' || lastButOne === '-' || lastButOne === '×' || lastButOne === '÷')&& clickValue === '='){ 
+      // 如果用户点击了类似 234+= 的情况，那么呈现的结果为234
       this.setData({
-        showValue:showValue.slice(0,length -2)
+        showValue:showValue.slice(0,length -2),
+        resultStr:showValue.slice(0,length-1),
+        result: showValue.slice(0, length - 2),
+        showResult:true,
+        clear:true
+      })
+    }else if(this.data.clear){
+      this.setData({
+        showValue:'' + clickValue,
+        result:'',
+        clear:false
       })
     }
   },
