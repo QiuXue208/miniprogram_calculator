@@ -34,19 +34,25 @@ Page({
     // 是否显示结果
     showResult:false,
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  },
   // 点击时改变显示的值
   userClick:function(e){
-    this.setData({
-      clickValue: e.target.id,
-      showValue: this.data.showValue + e.target.id,
-      showResult:false
-    })
+    // 如果是计算出结果后再点击,那么上排就显示上次得到的结果
+    if (this.data.showResult){
+        this.setData({
+          clickValue: e.target.id,
+          showResult: false,
+          resultStr: this.data.result,
+          showValue: '' + e.target.id,
+        })
+    } 
+    // 如果还没显示结果
+    else {
+      this.setData({
+        clickValue: e.target.id,
+        showValue: this.data.showValue + e.target.id,
+        showResult: false
+      })
+    }
     this.dealUserInput()
   },
   //用户点击的是否是运算符
@@ -91,6 +97,7 @@ Page({
   },
   // 处理用户输入
   dealUserInput:function(){
+    // console.log(this.data.showValue)
     let clickValue = this.data.clickValue
     let showValue = this.data.showValue
     let length = showValue.length
@@ -104,14 +111,15 @@ Page({
         resultStr:''
       })
     } else if (clickValue === '←') {
+      // 如果是计算出结果后再点击 ← ，那么上排置为空，下排为上一次的计算字符串
       this.setData({
-        showValue: showValue.slice(0,length - 2)
+        showValue: showValue.slice(0, length - 2)
       })
     }else if(this.isSign(lastButOne)&&this.isSign(clickValue)){
       this.setData({
         showValue: showValue.slice(0, length - 2) + clickValue
       })
-    }else if (this.isSign(lastButOne) && clickValue === '='){ 
+    }else if (length >2 && this.isSign(lastButOne) && clickValue === '='){ 
       // 如果用户点击了类似 234+= 的情况，那么呈现的结果为234
       this.setData({
         showValue:showValue.slice(0,length -2),
@@ -126,23 +134,20 @@ Page({
         result:'',
         clear:false
       })
-    } else if ((lastButOne === '' || (length === 2 && this.isSign(lastButOne))) && clickValue === '=') {
+    } else if ((length === 1 && clickValue === '=') || (this.isSign(lastButOne) && clickValue === '=') || this.isPrioritySign(first) && clickValue === '=' || (this.data.showValue === '错误' && clickValue === '=') || (this.data.showResult && clickValue === '=')) {
       // 如果一开始就点=，则报错
       // 如果showValue长度为2，第一个为计算符号，第二个为=号，也报错
       this.setData({
-        showValue: '错误'
+        showValue: '错误',
       })
+      console.log(this.data)
     } else if (showValue.slice(0, length - 1) === '错误') {
       // 如果显示屏上显示错误时，点击再次时按重新输入来算
       this.setData({
-        showValue: '' + clickValue
+        showValue: '' + clickValue,
+        resultStr:''
       })
-    } else if(this.isPrioritySign(first) && clickValue === '='){
-      //如果第一个 是计算符 * / % ，那么最后计算的结果将报错
-      this.setData({
-        showValue:'错误'
-      })
-    }else if(clickValue === '='){
+    } else if(clickValue === '='){
       //如果用户点击了=号就开始计算
       this.calculate(showValue.slice(0,length-1))
     }
@@ -222,7 +227,8 @@ Page({
     this.setData({
       result: this.judgeAndCal(sign[0], parseFloat(number[0]), parseFloat(number[1])),
       showResult:true,
-      showValue:''
+      resultStr:this.data.showValue.slice(0,this.data.showValue.length - 1),
+      // showValue:''
     })
   },
   /**
