@@ -28,6 +28,7 @@ Page({
     result:'',
     // '=' 前的一串数字和计算符
     resultStr:'',
+    // 保存上一次的 '=' 前的一串 数字和运算符
     lastResultStr:'',
     // 是否显示结果
     showResult:false,
@@ -102,7 +103,6 @@ Page({
   },
   // 处理用户输入
   dealUserInput:function(){
-    // console.log(this.data.showValue)
     let clickValue = this.data.clickValue
     let showValue = this.data.showValue
     let length = showValue.length
@@ -127,7 +127,6 @@ Page({
           lastResultStr:''
         })
       }else{
-        console.log(1)
           this.setData({
           showValue: showValue.slice(0, length - 2)
         })
@@ -138,7 +137,6 @@ Page({
         showValue: showValue.slice(0, length - 2) + clickValue
       })
     }else if (length >2 && this.isSign(lastButOne) && clickValue === '='){ 
-      console.log(1)
       // 如果用户点击了类似 234+= 的情况，那么呈现的结果为234
       this.setData({
         showValue:showValue.slice(0,length -2),
@@ -155,7 +153,6 @@ Page({
     }else if(clickValue === '='){
       //如果用户点击了=号就开始计算
       this.calculate(showValue.slice(0,length-1))
-      console.log(this.data)
     }
   },
   // 提取用户输入串中的 运算符、数
