@@ -3,7 +3,7 @@
 <view class='show-container'>
   <view class="result-text">{{resultStr}}</view>
   <view class="user-input">
-    <input value="{{showValue}}"></input>  
+    <input value="{{showResult === true ? result : showValue}}"></input>  
   </view>
 </view>
 <view class="number-and-symbol">
