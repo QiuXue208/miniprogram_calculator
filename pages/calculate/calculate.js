@@ -15,7 +15,13 @@ Page({
     },
     calcSign: ['%', '×', '÷', '+', '-'],
     number: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-    resultSign:'=',
+    // 存储用户输入的运算符
+    signArray:[],
+    // 存储运算符所在的下标
+    subsArray:[],
+    // 存储用户输入的待运算的数字
+    numberArray:[],
+    // resultSign:'=',
     // 点击的值
     clickValue:'',
     showValue:'',
@@ -39,10 +45,11 @@ Page({
     this.setData({
       clickValue: e.target.id,
       showValue: this.data.showValue + e.target.id,
+      showResult:false
     })
     this.dealUserInput()
   },
-  //用户点击的是否是calcSign数组里的符号
+  //用户点击的是否是运算符
   isSign:function(sign){
     if(this.data.calcSign.indexOf(sign) === -1){
       return false
@@ -58,6 +65,7 @@ Page({
       return true
     }
   },
+  // 是否为具有优先级的符号，包括 * / %
   isPrioritySign:function(sign){
     if(this.data.calcSign.slice(0,3).indexOf(sign) === -1){
       return false 
@@ -65,6 +73,23 @@ Page({
       return true
     }
   },
+  // 判断是否是普通的符号 包括 + -
+  isOrdinarySign:function(sign){
+    if (this.data.calcSign.slice(3, 5).indexOf(sign) === -1){
+      return false
+    }else{
+      return true
+    }
+  },
+  // 判断两个符号是否具有一样的优先级
+  isSamePriority:function(signF,signS){
+    if ((this.isPrioritySign(signF) && this.isPrioritySign(signS)) || (this.isOrdinarySign(signF)&& this.isOrdinarySign(signS))){
+      return true
+    }else{
+      return false
+    }
+  },
+  // 处理用户输入
   dealUserInput:function(){
     let clickValue = this.data.clickValue
     let showValue = this.data.showValue
@@ -119,11 +144,86 @@ Page({
       })
     }else if(clickValue === '='){
       //如果用户点击了=号就开始计算
-
+      this.calculate(showValue.slice(0,length-1))
     }
   },
+  // 提取用户输入串中的 运算符、数
+  extractUserInput:function(str){
+    let array = str.split('')
+    // 运算符
+    let signArray = []
+    // 待计算的数
+    let numberArray = []
+    // 运算符所在的下标,用于提取带计算的数
+    let subs = []
+    array.forEach((item, index) => {
+      if (this.isSign(item)) {
+        signArray.push(item)
+        subs.push(index)
+      }
+    })
+    subs.forEach((item, index) => {
+      if (index === 0) {
+        numberArray.push(str.slice(0, item))
+      } else if (index < subs.length) {
+        numberArray.push(str.slice(subs[index - 1] + 1, item))
+      }
+    })
+    numberArray.push(str.slice(subs[subs.length - 1] + 1, array.length))
+    this.setData({
+      numberArray:numberArray,
+      subsArray:subs,
+      signArray:signArray
+    })
+  },
+  judgeAndCal:function(sign,x,y){
+    switch(sign){
+      case '+':
+        return x + y
+        break
+      case '-':
+        return x - y
+        break
+      case '%':
+        return x % y
+        break
+      case '×':
+        return x * y
+        break
+      case '÷':
+        return x / y
+        break
+    }
+  },
+  // 计算
   calculate:function(str){
-
+    this.extractUserInput(str)
+    let number = this.data.numberArray
+    let subs = this.data.subsArray
+    let sign = this.data.signArray
+    for(let i = sign.length ; i >= 0; i--){
+        // 优先级相同 或着 第一个运算符比第二个运算符优先级大  ,那么先计算第一个运算符
+        if ((this.isSamePriority(sign[0], sign[1])) || (this.isPrioritySign(sign[0]) && this.isOrdinarySign(sign[1]))) {
+          let value = this.judgeAndCal(sign[0], parseFloat(number[0]), parseFloat(number[1]))
+          // 删除数组的j开始的两个元素，并插入新的结果
+          sign.splice(0, 1)
+          number.splice(0, 2)
+          number.splice(0, 0, value)
+        }
+        // 第二个运算符优先级更大 则先计算第二个运算符
+        else if (this.isPrioritySign(sign[1]) && this.isOrdinarySign(sign[0])) {
+          let value = this.judgeAndCal(sign[1], parseFloat(number[1]), parseFloat(number[2]))
+          // 删除数组的j+1开始的两个元素，并插入新的结果
+          sign.splice(1, 1)
+          number.splice(1, 2)
+          number.splice(1, 0, value)
+        }
+    }
+    this.setData({
+      result: this.judgeAndCal(sign[0], parseFloat(number[0]), parseFloat(number[1])),
+      showResult:true,
+      showValue:''
+    })
   },
   /**
    * 用户点击右上角分享
