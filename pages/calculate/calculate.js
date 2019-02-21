@@ -21,7 +21,6 @@ Page({
     subsArray:[],
     // 存储用户输入的待运算的数字
     numberArray:[],
-    // resultSign:'=',
     // 点击的值
     clickValue:'',
     showValue:'',
@@ -29,8 +28,7 @@ Page({
     result:'',
     // '=' 前的一串数字和计算符
     resultStr:'',
-    // 是否清空显示框
-    clear:false,
+    lastResultStr:'',
     // 是否显示结果
     showResult:false,
   },
@@ -41,6 +39,7 @@ Page({
         this.setData({
           clickValue: e.target.id,
           showResult: false,
+          lastResultStr:this.data.resultStr,
           resultStr: this.data.result,
           showValue: '' + e.target.id,
         })
@@ -51,6 +50,12 @@ Page({
         clickValue: e.target.id,
         showValue: this.data.showValue + e.target.id,
         showResult: false
+      })
+    }
+    // 如果开始显示错误，那么再次点击后，showValue为点击的值
+    if (this.data.showValue.slice(0,2) === '错误') {
+      this.setData({
+        showValue: '' + this.data.clickValue
       })
     }
     this.dealUserInput()
@@ -104,7 +109,6 @@ Page({
     // 倒数第二个显示的字符
     let lastButOne = showValue.slice(-2,-1)
     let first = showValue.slice(0,1)
-
     if (clickValue === 'C') {
       this.setData({
         showValue: '',
@@ -112,44 +116,46 @@ Page({
       })
     } else if (clickValue === '←') {
       // 如果是计算出结果后再点击 ← ，那么上排置为空，下排为上一次的计算字符串
-      this.setData({
-        showValue: showValue.slice(0, length - 2)
-      })
+      if(this.data.showValue.slice(0,2) === '错误'){
+        this.setData({
+          showValue:''
+        })
+      }else if(this.data.lastResultStr){
+        this.setData({
+          showValue:'' + this.data.lastResultStr,
+          resultStr:'',
+          lastResultStr:''
+        })
+      }else{
+        console.log(1)
+          this.setData({
+          showValue: showValue.slice(0, length - 2)
+        })
+      }
     }else if(this.isSign(lastButOne)&&this.isSign(clickValue)){
+      // 如果用户点击两个连续的运算符，则显示后一个
       this.setData({
         showValue: showValue.slice(0, length - 2) + clickValue
       })
     }else if (length >2 && this.isSign(lastButOne) && clickValue === '='){ 
+      console.log(1)
       // 如果用户点击了类似 234+= 的情况，那么呈现的结果为234
       this.setData({
         showValue:showValue.slice(0,length -2),
         resultStr:showValue.slice(0,length-1),
         result: showValue.slice(0, length - 2),
         showResult:true,
-        clear:true
       })
-    }else if(this.data.clear){
-      this.setData({
-        showValue:'' + clickValue,
-        result:'',
-        clear:false
-      })
-    } else if ((length === 1 && clickValue === '=') || (this.isSign(lastButOne) && clickValue === '=') || this.isPrioritySign(first) && clickValue === '=' || (this.data.showValue === '错误' && clickValue === '=') || (this.data.showResult && clickValue === '=')) {
+    }else if ((length === 1 && clickValue === '=') || (this.isSign(lastButOne) && clickValue === '=') || this.isPrioritySign(first) && clickValue === '=' || (showValue.slice(0,2) === '错误' && clickValue === '=') || (this.data.showResult && clickValue === '=')) {
       // 如果一开始就点=，则报错
       // 如果showValue长度为2，第一个为计算符号，第二个为=号，也报错
       this.setData({
         showValue: '错误',
       })
-      console.log(this.data)
-    } else if (showValue.slice(0, length - 1) === '错误') {
-      // 如果显示屏上显示错误时，点击再次时按重新输入来算
-      this.setData({
-        showValue: '' + clickValue,
-        resultStr:''
-      })
-    } else if(clickValue === '='){
+    }else if(clickValue === '='){
       //如果用户点击了=号就开始计算
       this.calculate(showValue.slice(0,length-1))
+      console.log(this.data)
     }
   },
   // 提取用户输入串中的 运算符、数
