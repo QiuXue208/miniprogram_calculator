@@ -42,5 +42,5 @@
     * 最后一步，计算 13-52=-39
 
 ## 效果预览
-输入 9-8=
-!(https://i.loli.net/2019/02/22/5c6f6cf33f047.png)
+
+! [image ] (https://s17.aconvert.com/convert/p3r68-cdx67/t7s0m-jwyva.gif)
