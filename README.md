@@ -43,4 +43,4 @@
 
 ## 效果预览
 
-! [image ] (https://s17.aconvert.com/convert/p3r68-cdx67/t7s0m-jwyva.gif)
+![image](https://s17.aconvert.com/convert/p3r68-cdx67/t7s0m-jwyva.gif)
